@@ -1,9 +1,9 @@
 package com.example.mydictionary.presenters
 
 import com.example.mydictionary.domain.Card
-import com.example.mydictionary.domain.interfaces.IRepository
-import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.domain.interfaces.CardsView
+import com.example.mydictionary.domain.interfaces.IScreens
+import com.example.mydictionary.interactors.RepositoryInteractor
 import com.example.mydictionary.views.adapters.IRVPresenter
 import com.example.mydictionary.views.adapters.IWordView
 import com.github.terrakok.cicerone.Router
@@ -12,17 +12,17 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 class CardsPresenter @Inject constructor(
-    private val repository: IRepository,
+    private val repositoryInteractor: RepositoryInteractor,
     private val mainScheduler: Scheduler,
     val wordsPresenter: IRVPresenter,
     private val router: Router,
     private val screens:IScreens,
 ) : MvpPresenter<CardsView>() {
     fun init() {
-        repository.getWords().observeOn(mainScheduler).subscribe { wordsList ->
+        repositoryInteractor.getCards().observeOn(mainScheduler).subscribe { cardsList ->
             wordsPresenter.list.apply {
                 clear()
-                addAll(wordsList)
+                addAll(cardsList)
                 viewState.notifyDataSetChanged()
             }
         }

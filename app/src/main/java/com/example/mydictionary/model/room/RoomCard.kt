@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "cards")
-data class Card(
+data class RoomCard(
     @PrimaryKey(autoGenerate = true)
     var uid: Long? = null,
     var value: String,

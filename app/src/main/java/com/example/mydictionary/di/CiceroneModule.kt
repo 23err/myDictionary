@@ -1,12 +1,18 @@
 package com.example.mydictionary.di
 
-import android.content.Context
 import androidx.room.Room
 import com.example.mydictionary.App
+import com.example.mydictionary.domain.Card
+import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.IScreens
+import com.example.mydictionary.domain.interfaces.Mapper
+import com.example.mydictionary.mappers.CardMapper
+import com.example.mydictionary.mappers.WordTranslationMapper
 import com.example.mydictionary.model.Repository
 import com.example.mydictionary.model.room.AppDataBase
+import com.example.mydictionary.model.room.RoomCard
+import com.example.mydictionary.model.room.RoomWordTranslation
 import com.example.mydictionary.presenters.CardsPresenter
 import com.example.mydictionary.views.MainActivity
 import com.example.mydictionary.views.Screens
@@ -47,7 +53,7 @@ class CiceroneModule {
 class RepositoryModule {
     @Singleton
     @Provides
-    fun repository(): IRepository = Repository()
+    fun repository(db: AppDataBase): IRepository = Repository(db)
 }
 
 @Module
@@ -57,26 +63,40 @@ class SchedulerModule {
 }
 
 @Module
-class PresenterModule{
+class PresenterModule {
     @Provides
     fun wordsPresenter(): IRVPresenter = CardsPresenter.WordsListPresenter()
 }
 
 @Module
-class AppModule(private val app:App){
+class AppModule(private val app: App) {
     @Provides
     fun app(): App = app
 }
 
 @Module
-class DatabaseModule{
+class DatabaseModule {
     @Named("dbName")
     @Singleton
     @Provides
-    fun dbName():String = "mydictionary.db"
+    fun dbName(): String = "mydictionary.db"
+
     @Singleton
     @Provides
-    fun db(context: Context, @Named("dbName") dbName: String): AppDataBase = Room.databaseBuilder(context, AppDataBase::class.java, dbName).build()
+    fun db(app: App, @Named("dbName") dbName: String): AppDataBase =
+        Room.databaseBuilder(app, AppDataBase::class.java, dbName)
+            .fallbackToDestructiveMigration().build()
+}
+
+@Module
+class MapperModule {
+    @Singleton
+    @Provides
+    fun cardMapper(): Mapper<RoomCard, Card> = CardMapper()
+
+    @Singleton
+    @Provides
+    fun wordTranslationMapper(): Mapper<RoomWordTranslation, WordTranslation> = WordTranslationMapper()
 }
 
 @Singleton
@@ -88,6 +108,7 @@ class DatabaseModule{
         PresenterModule::class,
         AppModule::class,
         DatabaseModule::class,
+        MapperModule::class,
     ]
 )
 

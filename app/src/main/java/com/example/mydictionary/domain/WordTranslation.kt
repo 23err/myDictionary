@@ -4,9 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Card(
+data class WordTranslation(
     var uid: Long? = null,
     var value: String,
-    var imageUrl: String? = null,
-    val wordTranslations: MutableList<WordTranslation> = mutableListOf()
-): Parcelable
+    var cardUid: Long? = null,
+):Parcelable
