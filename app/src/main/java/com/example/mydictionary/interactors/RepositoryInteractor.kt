@@ -4,6 +4,7 @@ import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.Mapper
+import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomWordTranslation
 import io.reactivex.rxjava3.core.Single
@@ -26,4 +27,8 @@ class RepositoryInteractor @Inject constructor(
 
     fun saveTranslationWords(uid: Long, wordTranslations: MutableList<WordTranslation>) =
         repo.saveWordTranslations(wordTranslations.map { wordTranslationsMapper.reverseMap(it) })
+
+    fun getCards(word:String): Single<RFWordTranslations> {
+        return repo.getCards(word)
+    }
 }

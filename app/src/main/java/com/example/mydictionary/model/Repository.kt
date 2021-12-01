@@ -1,6 +1,8 @@
 package com.example.mydictionary.model
 
 import com.example.mydictionary.domain.interfaces.IRepository
+import com.example.mydictionary.model.retrofit.SkyEngApi
+import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
 import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomWordTranslation
@@ -9,7 +11,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    private val db: AppDataBase
+    private val db: AppDataBase,
+    private val api:SkyEngApi,
 ) : IRepository {
     override fun getCards() =
         Single.fromCallable { db.cardsDao().get() }.subscribeOn(Schedulers.io())
@@ -29,4 +32,7 @@ class Repository @Inject constructor(
             db.wordtranslationsDao().insertAll(wordTranslations)
         }.subscribeOn(Schedulers.io())
 
+    override fun getCards(word: String): Single<RFWordTranslations> {
+        return api.getTranslate("word")
+    }
 }

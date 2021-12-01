@@ -9,6 +9,7 @@ import com.example.mydictionary.App
 import com.example.mydictionary.databinding.FragmentAddImageBinding
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.interfaces.AddImageView
+import com.example.mydictionary.presenters.AddImagePresenter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject

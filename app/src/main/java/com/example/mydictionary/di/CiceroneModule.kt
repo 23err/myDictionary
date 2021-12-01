@@ -10,6 +10,7 @@ import com.example.mydictionary.domain.interfaces.Mapper
 import com.example.mydictionary.mappers.CardMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
 import com.example.mydictionary.model.Repository
+import com.example.mydictionary.model.retrofit.SkyEngApi
 import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomWordTranslation
@@ -23,12 +24,17 @@ import com.example.mydictionary.views.fragments.CardsFragment
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import layout.AddCardFragment
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -53,7 +59,7 @@ class CiceroneModule {
 class RepositoryModule {
     @Singleton
     @Provides
-    fun repository(db: AppDataBase): IRepository = Repository(db)
+    fun repository(db: AppDataBase, api: SkyEngApi): IRepository = Repository(db, api)
 }
 
 @Module
@@ -96,7 +102,34 @@ class MapperModule {
 
     @Singleton
     @Provides
-    fun wordTranslationMapper(): Mapper<RoomWordTranslation, WordTranslation> = WordTranslationMapper()
+    fun wordTranslationMapper(): Mapper<RoomWordTranslation, WordTranslation> =
+        WordTranslationMapper()
+}
+
+@Module
+class RetrofitModule {
+    @Named("skyengUrl")
+    @Singleton
+    @Provides
+    fun url(): String = "https://dictionary.skyeng.ru/api/public/v1/"
+
+    @Singleton
+    @Provides
+    fun gson(): Gson = GsonBuilder().create()
+
+    @Singleton
+    @Provides
+    fun retrofit(@Named("skyengUrl") url: String, gson: Gson): Retrofit =
+        Retrofit
+            .Builder()
+            .baseUrl(url)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+    @Singleton
+    @Provides
+    fun api(retrofit: Retrofit): SkyEngApi = retrofit.create(SkyEngApi::class.java)
 }
 
 @Singleton
@@ -109,6 +142,7 @@ class MapperModule {
         AppModule::class,
         DatabaseModule::class,
         MapperModule::class,
+        RetrofitModule::class,
     ]
 )
 

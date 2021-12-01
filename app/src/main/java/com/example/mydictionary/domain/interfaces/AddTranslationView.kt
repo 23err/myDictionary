@@ -7,4 +7,5 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface AddTranslationView: MvpView {
     fun setTitle(text:String)
+    fun addTranslationWord(id:Int, text: String)
 }

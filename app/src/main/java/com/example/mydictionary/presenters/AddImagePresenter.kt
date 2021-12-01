@@ -1,4 +1,4 @@
-package com.example.mydictionary.views.fragments
+package com.example.mydictionary.presenters
 
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.interfaces.AddImageView
