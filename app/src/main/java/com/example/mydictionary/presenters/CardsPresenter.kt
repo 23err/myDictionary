@@ -16,9 +16,12 @@ class CardsPresenter @Inject constructor(
     private val mainScheduler: Scheduler,
     val wordsPresenter: IRVPresenter<Card, IWordView>,
     private val router: Router,
-    private val screens:IScreens,
+    private val screens: IScreens,
 ) : MvpPresenter<CardsView>() {
     fun init() {
+        wordsPresenter.onClickListener = { pos ->
+            router.navigateTo(screens.card(wordsPresenter.list.get(pos)))
+        }
         repositoryInteractor.getCards().observeOn(mainScheduler).subscribe { cardsList ->
             wordsPresenter.list.apply {
                 clear()

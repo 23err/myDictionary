@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydictionary.databinding.RvImagesItemBinding
 import com.example.mydictionary.domain.Image
-import com.example.mydictionary.domain.interfaces.IImageItemView
 import com.example.mydictionary.domain.interfaces.IImageLoader
 import com.example.mydictionary.domain.interfaces.IRVPresenter
+import com.example.mydictionary.domain.interfaces.ISelectedImageItemView
 
 class ImagesListAdapter(
-    private val presenter: IRVPresenter<Image, IImageItemView>,
+    private val presenter: IRVPresenter<Image, ISelectedImageItemView>,
     private val imageLoader:IImageLoader,
 
 ) : RecyclerView.Adapter<ImagesListAdapter.ImageItemView>() {
@@ -38,7 +38,7 @@ class ImagesListAdapter(
 
     inner class ImageItemView(private val binding: RvImagesItemBinding) :
         RecyclerView.ViewHolder(binding.root),
-        IImageItemView {
+        ISelectedImageItemView {
         override fun setImage(url: String) {
           imageLoader.load(url, binding.image)
         }

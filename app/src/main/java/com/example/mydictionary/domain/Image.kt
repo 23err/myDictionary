@@ -8,4 +8,5 @@ data class Image(
     var uid: Long? = null,
     var url: String,
     var previewUrl: String? = null,
+    var cardUid: Long? = null,
 ): Parcelable

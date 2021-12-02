@@ -70,5 +70,4 @@ class AddImageFragment : MvpAppCompatFragment(), AddImageView {
             arguments = bundle
         }
     }
-
 }

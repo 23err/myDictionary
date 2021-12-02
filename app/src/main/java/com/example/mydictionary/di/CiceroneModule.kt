@@ -8,18 +8,22 @@ import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.*
 import com.example.mydictionary.extensions.GlideImageLoader
 import com.example.mydictionary.mappers.CardMapper
+import com.example.mydictionary.mappers.ImageMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
 import com.example.mydictionary.model.Repository
 import com.example.mydictionary.model.retrofit.SkyEngApi
 import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
+import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
 import com.example.mydictionary.presenters.AddImagePresenter
+import com.example.mydictionary.presenters.CardPresenter
 import com.example.mydictionary.presenters.CardsPresenter
 import com.example.mydictionary.views.MainActivity
 import com.example.mydictionary.views.Screens
 import com.example.mydictionary.views.fragments.AddImageFragment
 import com.example.mydictionary.views.fragments.AddTranslationFragment
+import com.example.mydictionary.views.fragments.CardFragment
 import com.example.mydictionary.views.fragments.CardsFragment
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -74,8 +78,11 @@ class PresenterModule {
     fun wordsPresenter(): IRVPresenter<Card, IWordView> = CardsPresenter.WordsListPresenter()
 
     @Provides
-    fun rvImagesPresenter(): IRVPresenter<Image, IImageItemView> =
+    fun rvImagesPresenter(): IRVPresenter<Image, ISelectedImageItemView> =
         AddImagePresenter.RVImagesPresenter()
+
+    @Provides
+    fun rvCardImagesPresenter():IRVPresenter<Image, IImageItemView> = CardPresenter.RVCardImagesPresenter()
 }
 
 @Module
@@ -108,6 +115,10 @@ class MapperModule {
     @Provides
     fun wordTranslationMapper(): Mapper<RoomWordTranslation, WordTranslation> =
         WordTranslationMapper()
+
+    @Singleton
+    @Provides
+    fun imageMapper():Mapper<RoomImage, Image> = ImageMapper()
 }
 
 @Module
@@ -164,4 +175,5 @@ interface AppComponent {
     fun inject(addCardFragment: AddCardFragment)
     fun inject(addTranslationFragment: AddTranslationFragment)
     fun inject(addImageFragment: AddImageFragment)
+    fun inject(cardFragment: CardFragment)
 }

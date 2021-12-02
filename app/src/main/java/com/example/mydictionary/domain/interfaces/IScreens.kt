@@ -8,4 +8,5 @@ interface IScreens {
     fun addWord(): Screen
     fun addTranslation(card: Card): Screen
     fun addImage(card: Card): Screen
+    fun card(card: Card): Screen
 }
