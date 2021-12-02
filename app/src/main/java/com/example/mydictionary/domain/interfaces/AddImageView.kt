@@ -7,5 +7,5 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface AddImageView: MvpView {
     fun setTitle(title:String)
-
+    fun notifyDataSetChanged()
 }

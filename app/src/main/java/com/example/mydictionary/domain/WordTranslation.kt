@@ -8,4 +8,6 @@ data class WordTranslation(
     var uid: Long? = null,
     var value: String,
     var cardUid: Long? = null,
+    var id: Int? = null,
+    var image: Image? = null,
 ):Parcelable

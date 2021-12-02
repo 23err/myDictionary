@@ -9,7 +9,9 @@ import com.example.mydictionary.App
 import com.example.mydictionary.databinding.FragmentAddImageBinding
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.interfaces.AddImageView
+import com.example.mydictionary.domain.interfaces.IImageLoader
 import com.example.mydictionary.presenters.AddImagePresenter
+import com.example.mydictionary.views.adapters.ImagesListAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -18,7 +20,9 @@ class AddImageFragment : MvpAppCompatFragment(), AddImageView {
 
     private lateinit var binding: FragmentAddImageBinding
     @Inject lateinit var addImagePresenter: AddImagePresenter
+    @Inject lateinit var imageLoader: IImageLoader
     private val presenter by moxyPresenter { addImagePresenter }
+    private var adapter: ImagesListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.appComponent.inject(this)
@@ -43,7 +47,13 @@ class AddImageFragment : MvpAppCompatFragment(), AddImageView {
             btnNext.setOnClickListener{
                 presenter.nextClicked()
             }
+            adapter = ImagesListAdapter(presenter.rvImagesPresenter, imageLoader)
+            rvImages.adapter = adapter
         }
+    }
+
+    override fun notifyDataSetChanged() {
+        adapter?.notifyDataSetChanged()
     }
 
     override fun setTitle(title: String) {

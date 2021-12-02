@@ -32,7 +32,7 @@ class Repository @Inject constructor(
             db.wordtranslationsDao().insertAll(wordTranslations)
         }.subscribeOn(Schedulers.io())
 
-    override fun getCards(word: String): Single<RFWordTranslations> {
+    override fun getTranslationsWithImage(word: String): Single<RFWordTranslations> {
         return api.getTranslate("word")
     }
 }

@@ -10,5 +10,5 @@ interface IRepository {
     fun saveCard(card:RoomCard):Single<Long>
     fun getWordTranslations(cardUid: Long): Single<List<RoomWordTranslation>>
     fun saveWordTranslations(wordTranslations: List<RoomWordTranslation>):Single<List<Long>>
-    fun getCards(word:String): Single<RFWordTranslations>
+    fun getTranslationsWithImage(word:String): Single<RFWordTranslations>
 }

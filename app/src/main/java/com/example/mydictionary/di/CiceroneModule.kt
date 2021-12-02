@@ -3,10 +3,10 @@ package com.example.mydictionary.di
 import androidx.room.Room
 import com.example.mydictionary.App
 import com.example.mydictionary.domain.Card
+import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
-import com.example.mydictionary.domain.interfaces.IRepository
-import com.example.mydictionary.domain.interfaces.IScreens
-import com.example.mydictionary.domain.interfaces.Mapper
+import com.example.mydictionary.domain.interfaces.*
+import com.example.mydictionary.extensions.GlideImageLoader
 import com.example.mydictionary.mappers.CardMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
 import com.example.mydictionary.model.Repository
@@ -14,10 +14,10 @@ import com.example.mydictionary.model.retrofit.SkyEngApi
 import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.mydictionary.presenters.AddImagePresenter
 import com.example.mydictionary.presenters.CardsPresenter
 import com.example.mydictionary.views.MainActivity
 import com.example.mydictionary.views.Screens
-import com.example.mydictionary.views.adapters.IRVPresenter
 import com.example.mydictionary.views.fragments.AddImageFragment
 import com.example.mydictionary.views.fragments.AddTranslationFragment
 import com.example.mydictionary.views.fragments.CardsFragment
@@ -71,7 +71,11 @@ class SchedulerModule {
 @Module
 class PresenterModule {
     @Provides
-    fun wordsPresenter(): IRVPresenter = CardsPresenter.WordsListPresenter()
+    fun wordsPresenter(): IRVPresenter<Card, IWordView> = CardsPresenter.WordsListPresenter()
+
+    @Provides
+    fun rvImagesPresenter(): IRVPresenter<Image, IImageItemView> =
+        AddImagePresenter.RVImagesPresenter()
 }
 
 @Module
@@ -132,6 +136,12 @@ class RetrofitModule {
     fun api(retrofit: Retrofit): SkyEngApi = retrofit.create(SkyEngApi::class.java)
 }
 
+@Module
+class ImageLoader {
+    @Provides
+    fun imageLoader(app:App): IImageLoader = GlideImageLoader(app)
+}
+
 @Singleton
 @Component(
     modules = [
@@ -143,8 +153,10 @@ class RetrofitModule {
         DatabaseModule::class,
         MapperModule::class,
         RetrofitModule::class,
+        ImageLoader::class,
     ]
 )
+
 
 interface AppComponent {
     fun inject(mainActivity: MainActivity)

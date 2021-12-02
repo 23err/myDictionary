@@ -1,10 +1,10 @@
 package com.example.mydictionary.interactors
 
 import com.example.mydictionary.domain.Card
+import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.Mapper
-import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomWordTranslation
 import io.reactivex.rxjava3.core.Single
@@ -28,7 +28,32 @@ class RepositoryInteractor @Inject constructor(
     fun saveTranslationWords(uid: Long, wordTranslations: MutableList<WordTranslation>) =
         repo.saveWordTranslations(wordTranslations.map { wordTranslationsMapper.reverseMap(it) })
 
-    fun getCards(word:String): Single<RFWordTranslations> {
-        return repo.getCards(word)
+    fun getTranslationsWithImage(word: String): Single<List<WordTranslation>> {
+        return repo.getTranslationsWithImage(word).map {
+            if (it.size == 0 || it[0].meanings.size == 0) {
+                return@map listOf<WordTranslation>()
+            }
+            return@map it[0].meanings
+                .filter {
+                    it.translation != null && !it.translation?.text.isNullOrEmpty()
+                }
+                .map {
+                    var image: Image? = null
+                    val imageUrl = addPreffixHttpsOrNull(it.imageUrl)
+                    val previewImageUrl = addPreffixHttpsOrNull(it.previewUrl)
+                    imageUrl?.let { imageUrl ->
+                        image = Image(url = imageUrl, previewUrl = previewImageUrl)
+                    }
+                    WordTranslation(
+                        value = it.translation?.text ?: "",
+                        id = it.id,
+                        image = image
+                    )
+                }
+        }
     }
+
+    private fun addPreffixHttpsOrNull(url: String?): String? =
+        if (url.isNullOrEmpty()) null
+        else "https:$url"
 }

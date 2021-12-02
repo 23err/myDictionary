@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mydictionary.databinding.RvCardsItemBinding
 import com.example.mydictionary.domain.Card
+import com.example.mydictionary.domain.interfaces.IRVPresenter
+import com.example.mydictionary.domain.interfaces.IWordView
 
 class WordsListAdapter(
-    private val presenter: IRVPresenter,
+    private val presenter: IRVPresenter<Card, IWordView>,
 ) : RecyclerView.Adapter<WordsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -31,7 +33,8 @@ class WordsListAdapter(
         return presenter.getItemCount()
     }
 
-    class ViewHolder(private val binding: RvCardsItemBinding) : RecyclerView.ViewHolder(binding.root), IWordView{
+    class ViewHolder(private val binding: RvCardsItemBinding) : RecyclerView.ViewHolder(binding.root),
+        IWordView {
         override fun setLabel(text: String) {
             binding.label.text = text
         }
@@ -42,14 +45,3 @@ class WordsListAdapter(
     }
 }
 
-interface IWordView{
-    fun setLabel(text:String)
-    fun setImage(image:String)
-}
-
-interface IRVPresenter {
-    val list: MutableList<Card>
-    var onClickListener: ((Int) -> Unit)?
-    fun onBind(itemView: IWordView, position: Int)
-    fun getItemCount(): Int
-}
