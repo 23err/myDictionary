@@ -9,6 +9,7 @@ import com.example.mydictionary.domain.interfaces.ISelectedImageItemView
 import com.example.mydictionary.interactors.RepositoryInteractor
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class AddImagePresenter @Inject constructor(
 ) : MvpPresenter<AddImageView>() {
     private var card: Card? = null
     private val listOfImages = mutableListOf<Image>()
+    private val compositeDisposable = CompositeDisposable()
 
     fun init(card: Card) {
         this.card = card
@@ -43,9 +45,11 @@ class AddImagePresenter @Inject constructor(
     }
 
     fun nextClicked() {
-        listOfImages
+        if (listOfImages.size > 0){
+            card?.imageUrl = listOfImages[0].url
+        }
         card?.let {
-            repositoryInteractor.saveCard(it).subscribeOn(mainScheduler)
+            compositeDisposable.add(repositoryInteractor.saveCard(it).subscribeOn(mainScheduler)
                 .doFinally { router.newRootScreen(screens.wordList()) }
                 .subscribe { uid ->
                     it.wordTranslations.let {
@@ -59,7 +63,7 @@ class AddImagePresenter @Inject constructor(
                         repositoryInteractor.saveImages(uid, listOfImages).observeOn(mainScheduler)
                             .subscribe()
                     }
-                }
+                })
         }
     }
 

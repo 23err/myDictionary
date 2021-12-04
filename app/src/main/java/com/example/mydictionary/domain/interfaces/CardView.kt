@@ -6,6 +6,7 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface CardView : MvpView {
-    fun setTitle(text:String)
+    fun setTitle(text: String)
     fun notifyDataSetChanged()
+    fun showTranslation(translation: String)
 }

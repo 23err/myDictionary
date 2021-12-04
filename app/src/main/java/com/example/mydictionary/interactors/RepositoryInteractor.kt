@@ -27,12 +27,18 @@ class RepositoryInteractor @Inject constructor(
 
     fun saveCard(card: Card) = repo.saveCard(cardMapper.reverseMap(card))
 
+    fun getWordTranslations(cardUid: Long) = repo.getWordTranslations(cardUid).map {
+        it.map{wordTranslationsMapper.map(it)}
+    }
+
     fun saveTranslationWords(cardUid: Long, wordTranslations: MutableList<WordTranslation>) =
         repo.saveWordTranslations(wordTranslations.map { wordTranslationsMapper.reverseMap(it).apply { this.cardUid = cardUid } })
 
     fun saveImages(cardUid: Long, images: List<Image>) = repo.saveImages(images.map {
         imageMapper.reverseMap(it).apply { this.cardUid = cardUid }
     })
+
+    fun getImages(cardUid: Long) = repo.getImages(cardUid).map { it.map { imageMapper.map(it) } }
 
     fun getTranslationsWithImage(word: String): Single<List<WordTranslation>> {
         return repo.getTranslationsWithImage(word).map {

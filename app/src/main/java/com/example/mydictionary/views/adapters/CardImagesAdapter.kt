@@ -23,6 +23,7 @@ class CardImagesAdapter(
     )
 
     override fun onBindViewHolder(holder: ImageItemView, position: Int) {
+        presenter.onBind(holder, position)
         presenter.onClickListener?.invoke(position)
     }
 

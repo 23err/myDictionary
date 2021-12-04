@@ -35,7 +35,7 @@ class Repository @Inject constructor(
         }.subscribeOn(Schedulers.io())
 
     override fun getTranslationsWithImage(word: String): Single<RFWordTranslations> {
-        return api.getTranslate("word")
+        return api.getTranslate(word)
     }
 
     override fun getImages(cardUid: Long) = Single.fromCallable {

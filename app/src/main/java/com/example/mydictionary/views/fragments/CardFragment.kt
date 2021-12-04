@@ -18,11 +18,12 @@ import javax.inject.Inject
 class CardFragment : MvpAppCompatFragment() , CardView {
 
     private lateinit var binding: FragmentCardBinding
+    @Inject lateinit var imageLoader: IImageLoader
     @Inject
     lateinit var cardPresenter: CardPresenter
-    @Inject lateinit var imageLoader: IImageLoader
     private val presenter by moxyPresenter { cardPresenter }
     private var adapter: CardImagesAdapter? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,12 @@ class CardFragment : MvpAppCompatFragment() , CardView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = CardImagesAdapter(imageLoader, presenter.rvPresenter)
-        binding.rvCards.adapter = adapter
+        with(binding){
+            rvCards.adapter = adapter
+            showTranslate.setOnClickListener{
+                presenter.showTranslateClicked()
+            }
+        }
     }
 
     override fun notifyDataSetChanged() {
@@ -54,6 +60,10 @@ class CardFragment : MvpAppCompatFragment() , CardView {
 
     override fun setTitle(text: String) {
         binding.title.text = text
+    }
+
+    override fun showTranslation(translation: String) {
+        binding.showTranslate.text = translation
     }
 
     companion object{
