@@ -1,38 +1,38 @@
-package com.example.mydictionary.presenters
+package com.example.mydictionary.viewmodels
 
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.WordTranslation
-import com.example.mydictionary.domain.interfaces.AddTranslationView
 import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.interactors.RepositoryInteractor
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import moxy.MvpPresenter
 import javax.inject.Inject
 
-class AddTranslationPresenter @Inject constructor(
+class AddTranslationViewModel @Inject constructor(
     private val screens: IScreens,
     private val router: Router,
     private val repositoryInteractor: RepositoryInteractor,
     private val mainScheduler: Scheduler,
-) : MvpPresenter<AddTranslationView>() {
+) : BaseViewModel<List<WordTranslation>>() {
     private var card: Card? = null
     private var wordTranslations: List<WordTranslation>? = null
-    private val compositeDisposable = CompositeDisposable()
 
     fun init(card: Card) {
         this.card = card
-        viewState.setTitle(card.value)
-        compositeDisposable.add(repositoryInteractor.getTranslationsWithImage(card.value)
-            .observeOn(mainScheduler)
-            .subscribe { list ->
-                wordTranslations = list
-                list.forEach {
-                    viewState.addTranslationWord(it.id ?: 0, it.value)
+        compositeDisposable.add(
+            repositoryInteractor.getTranslationsWithImage(card.value)
+                .doOnSubscribe { liveDataForViewToObserve.postValue(AppState.Loading<List<WordTranslation>>()) }
+                .observeOn(mainScheduler)
+                .subscribe({ list ->
+                    val state = AppState.Success<List<WordTranslation>>(list)
+                    liveDataForViewToObserve.postValue(state)
+                    wordTranslations = list
+                }, {
+                    val state = AppState.Error<List<WordTranslation>>(RuntimeException(it))
+                    liveDataForViewToObserve.postValue(state)
                 }
-            })
-
+                )
+        )
     }
 
     fun nextClick(translation: String) {
@@ -45,7 +45,6 @@ class AddTranslationPresenter @Inject constructor(
     }
 
     fun checkedWord(id: Int, checked: Boolean) {
-
         wordTranslations?.let { it ->
             val wordTranslation = it.first { it.id == id }
             if (checked) {
@@ -58,8 +57,4 @@ class AddTranslationPresenter @Inject constructor(
         }
     }
 
-    override fun onDestroy() {
-        compositeDisposable.dispose()
-        super.onDestroy()
-    }
 }

@@ -1,32 +1,28 @@
 package com.example.mydictionary.views
 
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mydictionary.App
 import com.example.mydictionary.R
-import com.example.mydictionary.domain.interfaces.MainView
-import com.example.mydictionary.presenters.MainPresenter
+import com.example.mydictionary.viewmodels.MainViewModel
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import moxy.MvpAppCompatActivity
-import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 
-class MainActivity : MvpAppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
     private val navigator = AppNavigator(this, R.id.container)
-    @Inject lateinit var mainPresenter: MainPresenter
-    private val presenter by moxyPresenter { mainPresenter }
+    @Inject lateinit var viewModel: MainViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        presenter.init()
+        viewModel.init()
     }
 
 

@@ -10,7 +10,7 @@ import com.example.mydictionary.databinding.FragmentAddImageBinding
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.interfaces.AddImageView
 import com.example.mydictionary.domain.interfaces.IImageLoader
-import com.example.mydictionary.presenters.AddImagePresenter
+import com.example.mydictionary.viewmodels.AddImagePresenter
 import com.example.mydictionary.views.adapters.ImagesListAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
