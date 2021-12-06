@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MyDictionary</string>
+    <string name="words">Слова</string>
+    <string name="word">Слово</string>
+    <string name="attension_field_cant_be_empty">Поле не может быть пустым</string>
+    <string name="translate">Перевод</string>
+    <string name="select_image">Выбрать картинку</string>
+    <string name="show_translation">Показать перевод</string>
+    <string name="know">Знаю</string>
+    <string name="dont_know">Не знаю</string>
 </resources>
