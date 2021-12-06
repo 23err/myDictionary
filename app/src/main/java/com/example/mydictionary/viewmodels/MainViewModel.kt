@@ -1,16 +1,13 @@
-package com.example.mydictionary.presenters
+package com.example.mydictionary.viewmodels
 
 import com.example.mydictionary.domain.interfaces.IScreens
-import com.example.mydictionary.domain.interfaces.MainView
 import com.github.terrakok.cicerone.Router
-import moxy.MvpPresenter
 import javax.inject.Inject
 
-class MainPresenter @Inject constructor(
+class MainViewModel @Inject constructor(
     private val router: Router,
     private val screens:IScreens,
-) : MvpPresenter<MainView>() {
-
+) {
 
     fun init() {
         router.navigateTo(screens.wordList())

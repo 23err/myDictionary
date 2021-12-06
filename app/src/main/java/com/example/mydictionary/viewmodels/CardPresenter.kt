@@ -1,4 +1,4 @@
-package com.example.mydictionary.presenters
+package com.example.mydictionary.viewmodels
 
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.Image

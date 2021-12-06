@@ -16,9 +16,9 @@ import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
-import com.example.mydictionary.presenters.AddImagePresenter
-import com.example.mydictionary.presenters.CardPresenter
-import com.example.mydictionary.presenters.CardsPresenter
+import com.example.mydictionary.viewmodels.AddImagePresenter
+import com.example.mydictionary.viewmodels.CardPresenter
+import com.example.mydictionary.viewmodels.CardsPresenter
 import com.example.mydictionary.views.MainActivity
 import com.example.mydictionary.views.Screens
 import com.example.mydictionary.views.fragments.AddImageFragment

@@ -9,7 +9,7 @@ import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentCardsBinding
 import com.example.mydictionary.domain.interfaces.CardsView
 import com.example.mydictionary.domain.interfaces.IImageLoader
-import com.example.mydictionary.presenters.CardsPresenter
+import com.example.mydictionary.viewmodels.CardsPresenter
 import com.example.mydictionary.views.adapters.WordsListAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter

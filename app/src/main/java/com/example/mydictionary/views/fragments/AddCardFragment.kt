@@ -5,21 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.mydictionary.App
 import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentAddWordBinding
-import com.example.mydictionary.domain.interfaces.AddCardView
-import com.example.mydictionary.presenters.AddCardPresenter
-import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
+import com.example.mydictionary.viewmodels.AddCardViewModel
 import javax.inject.Inject
 
-class AddCardFragment : MvpAppCompatFragment(), AddCardView {
+class AddCardFragment : Fragment() {
 
     private lateinit var binding: FragmentAddWordBinding
-
-    @Inject lateinit var addCardPresenter: AddCardPresenter
-    private val presenter by moxyPresenter { addCardPresenter }
+    @Inject lateinit var addCardViewModel: AddCardViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.appComponent.inject(this)
@@ -48,7 +44,7 @@ class AddCardFragment : MvpAppCompatFragment(), AddCardView {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    presenter.nextClicked(word)
+                    this@AddCardFragment.addCardViewModel.nextClicked(word)
                 }
             }
         }
