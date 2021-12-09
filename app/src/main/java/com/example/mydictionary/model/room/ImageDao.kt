@@ -7,8 +7,8 @@ import androidx.room.Query
 @Dao
 interface ImageDao {
     @Query("SELECT * FROM images WHERE card_uid = :cardUid")
-    fun getImages(cardUid:Long): List<RoomImage>
+    suspend fun getImages(cardUid:Long): List<RoomImage>
 
     @Insert
-    fun insert(list: List<RoomImage>):List<Long>
+    suspend fun insert(list: List<RoomImage>):List<Long>
 }

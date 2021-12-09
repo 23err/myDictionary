@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.mydictionary.App
 import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentAddTranslationBinding
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.viewmodels.AddTranslationViewModel
 import com.example.mydictionary.viewmodels.AppState
 import com.google.android.material.chip.Chip
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class AddTranslationFragment : Fragment() {
 
     private lateinit var binding: FragmentAddTranslationBinding
 
-    @Inject
-    lateinit var viewModel: AddTranslationViewModel
+    private val viewModel: AddTranslationViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +30,6 @@ class AddTranslationFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance.appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -47,18 +44,18 @@ class AddTranslationFragment : Fragment() {
                 viewModel.init(it)
             }
 
-            viewModel.getLiveData().observe(viewLifecycleOwner) {
-                when (it) {
+            viewModel.getLiveData().observe(viewLifecycleOwner) { appState ->
+                when (appState) {
                     is AppState.Success -> {
                         translationsContainer.removeAllViews()
-                        it.data.forEach{
+                        appState.data.forEach{
                             it.id?.let{id->
                                 translationsContainer.addView(createTranslationWordChip(id, it.value))
                             }
                         }
                     }
-                    is AppState.Loading->createToast(it.status)
-                    is AppState.Error->createToast(it.error.message.toString())
+                    is AppState.Loading->createToast(appState.status)
+                    is AppState.Error->createToast(appState.error.message.toString())
                 }
             }
 

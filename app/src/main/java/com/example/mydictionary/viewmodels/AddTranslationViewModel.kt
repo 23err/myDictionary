@@ -5,34 +5,29 @@ import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.interactors.RepositoryInteractor
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.Scheduler
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-class AddTranslationViewModel @Inject constructor(
+class AddTranslationViewModel (
     private val screens: IScreens,
     private val router: Router,
     private val repositoryInteractor: RepositoryInteractor,
-    private val mainScheduler: Scheduler,
 ) : BaseViewModel<List<WordTranslation>>() {
     private var card: Card? = null
     private var wordTranslations: List<WordTranslation>? = null
 
     fun init(card: Card) {
         this.card = card
-        compositeDisposable.add(
-            repositoryInteractor.getTranslationsWithImage(card.value)
-                .doOnSubscribe { liveDataForViewToObserve.postValue(AppState.Loading<List<WordTranslation>>()) }
-                .observeOn(mainScheduler)
-                .subscribe({ list ->
-                    val state = AppState.Success<List<WordTranslation>>(list)
-                    liveDataForViewToObserve.postValue(state)
-                    wordTranslations = list
-                }, {
-                    val state = AppState.Error<List<WordTranslation>>(RuntimeException(it))
-                    liveDataForViewToObserve.postValue(state)
-                }
-                )
-        )
+        viewModelCoroutineScope.launch {
+            val list = repositoryInteractor.getTranslationsWithImage(card.value)
+            val state = AppState.Success<List<WordTranslation>>(list)
+            liveDataForViewToObserve.postValue(state)
+            wordTranslations = list
+        }
+    }
+
+    override fun handleError(throwable: Throwable) {
+        val errorState = AppState.Error<List<WordTranslation>>(throwable)
+        liveDataForViewToObserve.postValue(errorState)
     }
 
     fun nextClick(translation: String) {

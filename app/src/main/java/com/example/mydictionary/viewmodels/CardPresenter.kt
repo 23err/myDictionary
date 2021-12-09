@@ -6,38 +6,44 @@ import com.example.mydictionary.domain.interfaces.CardView
 import com.example.mydictionary.domain.interfaces.IImageItemView
 import com.example.mydictionary.domain.interfaces.IRVPresenter
 import com.example.mydictionary.interactors.RepositoryInteractor
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 import moxy.MvpPresenter
-import javax.inject.Inject
 
-class CardPresenter @Inject constructor(
+class CardPresenter (
     val rvPresenter: IRVPresenter<Image, IImageItemView>,
     private val repositoryInteractor: RepositoryInteractor,
-    private val mainScheduler: Scheduler,
 ) : MvpPresenter<CardView>() {
 
     private var translation: String? = null
-    private val compositeDisposable = CompositeDisposable()
+    private val presenterCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                + SupervisorJob()
+                + CoroutineExceptionHandler{ _, throwable->
+            handleError(throwable)
+        }
+    )
+
+    private fun handleError(throwable: Throwable) {
+        throwable.message?.let{
+            viewState.showError(it)
+        }
+    }
 
     fun init(card: Card) {
         viewState.setTitle(card.value)
 
         card.uid?.let {
-            compositeDisposable.add(repositoryInteractor.getWordTranslations(it)
-                .observeOn(mainScheduler)
-                .subscribe { wordTranslations ->
-                    translation = wordTranslations.map { it.value }.joinToString(separator = ", ")
-                })
-
-            compositeDisposable.add(
-                repositoryInteractor.getImages(it).observeOn(mainScheduler).subscribe { imageList ->
-                    rvPresenter.list.apply {
-                        clear()
-                        addAll(imageList)
-                        viewState.notifyDataSetChanged()
-                    }
-                })
+            presenterCoroutineScope.launch {
+                val translation = repositoryInteractor.getWordTranslations(it)
+                    .map { it.value }
+                    .joinToString(separator = ", ")
+                val imageList = repositoryInteractor.getImages(it)
+                rvPresenter.list.apply {
+                    clear()
+                    addAll(imageList)
+                    viewState.notifyDataSetChanged()
+                }
+            }
         }
     }
 
@@ -48,7 +54,7 @@ class CardPresenter @Inject constructor(
     }
 
     override fun onDestroy() {
-        compositeDisposable.dispose()
+        presenterCoroutineScope.cancel()
     }
 
     class RVCardImagesPresenter : IRVPresenter<Image, IImageItemView> {

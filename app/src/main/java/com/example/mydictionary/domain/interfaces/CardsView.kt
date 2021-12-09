@@ -7,4 +7,5 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndStrategy::class)
 interface CardsView : MvpView {
     fun notifyDataSetChanged()
+    fun showError(message: String)
 }

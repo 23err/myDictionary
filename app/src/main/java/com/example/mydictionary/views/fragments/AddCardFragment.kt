@@ -6,19 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.mydictionary.App
 import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentAddWordBinding
 import com.example.mydictionary.viewmodels.AddCardViewModel
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class AddCardFragment : Fragment() {
 
     private lateinit var binding: FragmentAddWordBinding
-    @Inject lateinit var addCardViewModel: AddCardViewModel
+    private val addCardViewModel: AddCardViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance.appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
     }

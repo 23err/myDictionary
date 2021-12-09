@@ -9,4 +9,5 @@ interface CardView : MvpView {
     fun setTitle(text: String)
     fun notifyDataSetChanged()
     fun showTranslation(translation: String)
+    fun showError(message: String)
 }

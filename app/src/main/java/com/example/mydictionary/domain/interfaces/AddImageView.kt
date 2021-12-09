@@ -8,4 +8,5 @@ import moxy.viewstate.strategy.StateStrategyType
 interface AddImageView: MvpView {
     fun setTitle(title:String)
     fun notifyDataSetChanged()
+    fun showError(message:String)
 }

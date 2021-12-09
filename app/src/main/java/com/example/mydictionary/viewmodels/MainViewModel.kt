@@ -1,13 +1,13 @@
 package com.example.mydictionary.viewmodels
 
+import androidx.lifecycle.ViewModel
 import com.example.mydictionary.domain.interfaces.IScreens
 import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val router: Router,
     private val screens:IScreens,
-) {
+) : ViewModel() {
 
     fun init() {
         router.navigateTo(screens.wordList())

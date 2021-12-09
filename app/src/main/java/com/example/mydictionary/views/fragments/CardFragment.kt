@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.mydictionary.App
+import android.widget.Toast
 import com.example.mydictionary.databinding.FragmentCardBinding
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.interfaces.CardView
@@ -13,21 +13,17 @@ import com.example.mydictionary.viewmodels.CardPresenter
 import com.example.mydictionary.views.adapters.CardImagesAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class CardFragment : MvpAppCompatFragment() , CardView {
 
     private lateinit var binding: FragmentCardBinding
-    @Inject lateinit var imageLoader: IImageLoader
-    @Inject
-    lateinit var cardPresenter: CardPresenter
+    private val imageLoader: IImageLoader by inject()
+    private val cardPresenter: CardPresenter by inject()
     private val presenter by moxyPresenter { cardPresenter }
     private var adapter: CardImagesAdapter? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.getParcelable<Card>(CARD)?.let {
             presenter.init(it)
@@ -64,6 +60,10 @@ class CardFragment : MvpAppCompatFragment() , CardView {
 
     override fun showTranslation(translation: String) {
         binding.showTranslate.text = translation
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object{
