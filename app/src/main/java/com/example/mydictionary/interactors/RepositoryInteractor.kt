@@ -5,64 +5,64 @@ import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.Mapper
+import com.example.mydictionary.mappers.CardMapper
+import com.example.mydictionary.mappers.ImageMapper
+import com.example.mydictionary.mappers.WordTranslationMapper
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
-import javax.inject.Inject
 
-class RepositoryInteractor @Inject constructor(
+class RepositoryInteractor (
     private val repo: IRepository,
-    private val cardMapper: Mapper<RoomCard, Card>,
-    private val wordTranslationsMapper: Mapper<RoomWordTranslation, WordTranslation>,
-    private val imageMapper: Mapper<RoomImage, Image>,
+    private val cardMapper: Mapper<RoomCard, Card> = CardMapper(),
+    private val wordTranslationsMapper: Mapper<RoomWordTranslation, WordTranslation> = WordTranslationMapper(),
+    private val imageMapper: Mapper<RoomImage, Image> = ImageMapper(),
 ) {
-    fun getCards(): Single<List<Card>> =
-        repo.getCards().observeOn(Schedulers.computation()).map { list ->
-            list.map {
-                cardMapper.map(it)
-            }
+    suspend fun getCards(): List<Card> =
+        repo.getCards().map { roomCard ->
+           cardMapper.map(roomCard)
         }
 
-    fun saveCard(card: Card) = repo.saveCard(cardMapper.reverseMap(card))
+    suspend fun saveCard(card: Card) = repo.saveCard(cardMapper.reverseMap(card))
 
-    fun getWordTranslations(cardUid: Long) = repo.getWordTranslations(cardUid).map {
-        it.map{wordTranslationsMapper.map(it)}
+    suspend fun getWordTranslations(cardUid: Long) = repo.getWordTranslations(cardUid).map {
+        wordTranslationsMapper.map(it)
     }
 
-    fun saveTranslationWords(cardUid: Long, wordTranslations: MutableList<WordTranslation>) =
-        repo.saveWordTranslations(wordTranslations.map { wordTranslationsMapper.reverseMap(it).apply { this.cardUid = cardUid } })
+    suspend fun saveTranslationWords(cardUid: Long, wordTranslations: MutableList<WordTranslation>) =
+        repo.saveWordTranslations(wordTranslations.map {
+            wordTranslationsMapper.reverseMap(it).apply { this.cardUid = cardUid }
+        })
 
-    fun saveImages(cardUid: Long, images: List<Image>) = repo.saveImages(images.map {
+    suspend fun saveImages(cardUid: Long, images: List<Image>) = repo.saveImages(images.map {
         imageMapper.reverseMap(it).apply { this.cardUid = cardUid }
     })
 
-    fun getImages(cardUid: Long) = repo.getImages(cardUid).map { it.map { imageMapper.map(it) } }
+    suspend fun getImages(cardUid: Long) = repo.getImages(cardUid).map {
+        imageMapper.map(it)
+    }
 
-    fun getTranslationsWithImage(word: String): Single<List<WordTranslation>> {
-        return repo.getTranslationsWithImage(word).map {
-            if (it.size == 0 || it[0].meanings.size == 0) {
-                return@map listOf<WordTranslation>()
+    suspend fun getTranslationsWithImage(word: String): List<WordTranslation> {
+        val wordTranslations = repo.getTranslationsWithImage(word)
+        if (wordTranslations.size == 0) return listOf<WordTranslation>()
+
+        return wordTranslations[0].meanings
+            .filter {
+                it.translation != null && !it.translation.text.isNullOrEmpty()
             }
-            return@map it[0].meanings
-                .filter {
-                    it.translation != null && !it.translation.text.isNullOrEmpty()
+            .map {
+                var image: Image? = null
+                val imageUrl = addPreffixHttpsOrNull(it.imageUrl)
+                val previewImageUrl = addPreffixHttpsOrNull(it.previewUrl)
+                imageUrl?.let { url ->
+                    image = Image(url = url, previewUrl = previewImageUrl)
                 }
-                .map {
-                    var image: Image? = null
-                    val imageUrl = addPreffixHttpsOrNull(it.imageUrl)
-                    val previewImageUrl = addPreffixHttpsOrNull(it.previewUrl)
-                    imageUrl?.let { url ->
-                        image = Image(url = url, previewUrl = previewImageUrl)
-                    }
-                    WordTranslation(
-                        value = it.translation?.text ?: "",
-                        id = it.id,
-                        image = image
-                    )
-                }
-        }
+                WordTranslation(
+                    value = it.translation?.text ?: "",
+                    id = it.id,
+                    image = image
+                )
+            }
     }
 
     private fun addPreffixHttpsOrNull(url: String?): String? =

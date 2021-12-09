@@ -7,11 +7,11 @@ import androidx.room.Query
 @Dao
 interface WordTranslationDao {
     @Query("SELECT * FROM word_translations WHERE card_uid = :cardUid")
-    fun get(cardUid: Long): List<RoomWordTranslation>
+    suspend fun get(cardUid: Long): List<RoomWordTranslation>
 
     @Insert
-    fun insert(wordTranslation: RoomWordTranslation): Long
+    suspend fun insert(wordTranslation: RoomWordTranslation): Long
 
     @Insert
-    fun insertAll(listWordTranslation: List<RoomWordTranslation>):List<Long>
+    suspend fun insertAll(listWordTranslation: List<RoomWordTranslation>):List<Long>
 }

@@ -7,8 +7,9 @@ import androidx.room.Query
 @Dao
 interface CardDao {
     @Query("SELECT * FROM cards")
-    fun get():List<RoomCard>
+    suspend fun get(): List<RoomCard>
+
 
     @Insert
-    fun insert(card:RoomCard): Long
+    suspend fun insert(card:RoomCard): Long
 }

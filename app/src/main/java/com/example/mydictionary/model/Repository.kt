@@ -7,42 +7,30 @@ import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
 import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
-import javax.inject.Inject
 
-class Repository @Inject constructor(
+class Repository(
     private val db: AppDataBase,
     private val api: SkyEngApi,
 ) : IRepository {
 
-    override fun getCards() =
-        Single.fromCallable { db.cardsDao().get() }.subscribeOn(Schedulers.io())
+    override suspend fun getCards() = db.cardsDao().get()
 
-    override fun saveCard(card: RoomCard) =
-        Single.fromCallable {
-            db.cardsDao().insert(card)
-        }.subscribeOn(Schedulers.io())
+    override suspend fun saveCard(card: RoomCard) =
+        db.cardsDao().insert(card)
 
-    override fun getWordTranslations(cardUid: Long): Single<List<RoomWordTranslation>> =
-        Single.fromCallable {
-            db.wordtranslationsDao().get(cardUid)
-        }.subscribeOn(Schedulers.io())
+    override suspend fun getWordTranslations(cardUid: Long): List<RoomWordTranslation> =
+        db.wordtranslationsDao().get(cardUid)
 
-    override fun saveWordTranslations(wordTranslations: List<RoomWordTranslation>) =
-        Single.fromCallable {
-            db.wordtranslationsDao().insertAll(wordTranslations)
-        }.subscribeOn(Schedulers.io())
+    override suspend fun saveWordTranslations(wordTranslations: List<RoomWordTranslation>) =
+        db.wordtranslationsDao().insertAll(wordTranslations)
 
-    override fun getTranslationsWithImage(word: String): Single<RFWordTranslations> {
-        return api.getTranslate(word)
+    override suspend fun getTranslationsWithImage(word: String): RFWordTranslations {
+        return api.getTranslate(word).await()
     }
 
-    override fun getImages(cardUid: Long) = Single.fromCallable {
+    override suspend fun getImages(cardUid: Long) =
         db.imagesDao().getImages(cardUid)
-    }.subscribeOn(Schedulers.io())
 
-    override fun saveImages(images: List<RoomImage>) = Single.fromCallable {
+    override suspend fun saveImages(images: List<RoomImage>) =
         db.imagesDao().insert(images)
-    }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.mydictionary.App
+import android.widget.Toast
 import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentCardsBinding
 import com.example.mydictionary.domain.interfaces.CardsView
@@ -13,21 +13,16 @@ import com.example.mydictionary.viewmodels.CardsPresenter
 import com.example.mydictionary.views.adapters.WordsListAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class CardsFragment: MvpAppCompatFragment(),  CardsView{
 
     private lateinit var binding: FragmentCardsBinding
-    @Inject lateinit var cardsPresenter: CardsPresenter
+    private val cardsPresenter: CardsPresenter by inject()
     private val presenter by moxyPresenter { cardsPresenter }
-    @Inject lateinit var imageLoader: IImageLoader
+    private val imageLoader: IImageLoader by inject()
 
     private var adapter: WordsListAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance.appComponent.inject(this)
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +44,10 @@ class CardsFragment: MvpAppCompatFragment(),  CardsView{
                 presenter.addWordClick()
             }
         }
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun notifyDataSetChanged() {

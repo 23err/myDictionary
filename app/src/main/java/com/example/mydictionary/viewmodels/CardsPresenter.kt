@@ -7,41 +7,47 @@ import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.domain.interfaces.IWordView
 import com.example.mydictionary.interactors.RepositoryInteractor
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 import moxy.MvpPresenter
-import javax.inject.Inject
 
-class CardsPresenter @Inject constructor(
+class CardsPresenter(
     private val repositoryInteractor: RepositoryInteractor,
-    private val mainScheduler: Scheduler,
     val wordsPresenter: IRVPresenter<Card, IWordView>,
     private val router: Router,
-    private val screens: IScreens,
-) : MvpPresenter<CardsView>() {
+    private val screens: IScreens
 
-    private val compositeDisposable = CompositeDisposable()
+) : MvpPresenter<CardsView>() {
+    private val presenterCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                + SupervisorJob()
+                + CoroutineExceptionHandler{ _, throwable->
+            handleError(throwable)
+        }
+    )
+
+    private fun handleError(throwable: Throwable) {
+        throwable.message?.let{
+            viewState.showError(it)
+        }
+    }
 
     fun init() {
         wordsPresenter.onClickListener = { pos ->
             router.navigateTo(screens.card(wordsPresenter.list.get(pos)))
         }
-        compositeDisposable.add(repositoryInteractor.getCards().observeOn(mainScheduler).subscribe { cardsList ->
+
+        presenterCoroutineScope.launch {
+            val cardsList = repositoryInteractor.getCards()
             wordsPresenter.list.apply {
                 clear()
                 addAll(cardsList)
                 viewState.notifyDataSetChanged()
             }
-        })
+        }
     }
 
     fun addWordClick() {
         router.navigateTo(screens.addWord())
-    }
-
-    override fun onDestroy() {
-        compositeDisposable.dispose()
-        super.onDestroy()
     }
 
     class WordsListPresenter() : IRVPresenter<Card, IWordView> {
@@ -51,10 +57,9 @@ class CardsPresenter @Inject constructor(
         override fun onBind(itemView: IWordView, position: Int) {
             val card = list[position]
             itemView.setLabel(card.value)
-            card.imageUrl?.let{
+            card.imageUrl?.let {
                 itemView.setImage(it)
             }
-
         }
 
         override fun getItemCount() = list.size

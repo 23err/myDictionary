@@ -1,21 +1,41 @@
 package com.example.mydictionary
 
 import android.app.Application
-import com.example.mydictionary.di.AppComponent
-import com.example.mydictionary.di.AppModule
-import com.example.mydictionary.di.DaggerAppComponent
+import com.example.mydictionary.di.KoinModules.appContext
+import com.example.mydictionary.di.KoinModules.cicerone
+import com.example.mydictionary.di.KoinModules.db
+import com.example.mydictionary.di.KoinModules.imageLoader
+import com.example.mydictionary.di.KoinModules.mapper
+import com.example.mydictionary.di.KoinModules.presenter
+import com.example.mydictionary.di.KoinModules.repository
+import com.example.mydictionary.di.KoinModules.retrofit
+import com.example.mydictionary.di.KoinModules.viewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
-
-    lateinit var appComponent: AppComponent
-    private set
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+
+        startKoin {
+            androidContext(this@App)
+            modules(
+                mapper,
+                cicerone,
+                viewModel,
+                appContext,
+                imageLoader,
+                presenter,
+                retrofit,
+                db,
+                repository,
+            )
+        }
     }
-    companion object{
+
+    companion object {
         lateinit var instance: App
             private set
     }
