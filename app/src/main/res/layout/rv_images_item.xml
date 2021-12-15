@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:elevation="3dp"
-    android:padding="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
 
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:src="@drawable/cow" />
+
+    <ImageView
+        android:id="@+id/selectButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="top|start"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray_opacity_50"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_done_24"
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/selectButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/ic_baseline_done_24"
-            android:visibility="invisible"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            tools:src="@drawable/cow" />
-    </LinearLayout>
-
-
-</androidx.cardview.widget.CardView>
+</FrameLayout>
