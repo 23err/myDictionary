@@ -57,10 +57,10 @@ dependencies {
     implementation "com.github.moxy-community:moxy-ktx:$moxy_version"
     implementation "com.github.moxy-community:moxy-androidx:$moxy_version"
     //room
-    def room_version = "2.3.0"
+    def room_version = "2.4.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation "androidx.room:room-ktx:$room_version"
     //retrofit
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
