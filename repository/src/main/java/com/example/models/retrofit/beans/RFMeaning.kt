@@ -1,4 +1,4 @@
-package com.example.mydictionary.model.retrofit.beans
+package com.example.mydictionary.models.retrofit.beans
 
 data class RFMeaning(
     val id: Int,

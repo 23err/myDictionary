@@ -1,11 +1,11 @@
 package com.example.mydictionary.di
 
 import androidx.room.Room
+import com.example.domain.IRepository
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IImageLoader
-import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.domain.interfaces.Mapper
 import com.example.mydictionary.extensions.GlideImageLoader
@@ -13,12 +13,12 @@ import com.example.mydictionary.interactors.RepositoryInteractor
 import com.example.mydictionary.mappers.CardMapper
 import com.example.mydictionary.mappers.ImageMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
-import com.example.mydictionary.model.Repository
-import com.example.mydictionary.model.retrofit.SkyEngApi
-import com.example.mydictionary.model.room.AppDataBase
-import com.example.mydictionary.model.room.RoomCard
-import com.example.mydictionary.model.room.RoomImage
-import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.mydictionary.models.Repository
+import com.example.mydictionary.models.retrofit.SkyEngApi
+import com.example.mydictionary.models.room.AppDataBase
+import com.example.mydictionary.models.room.RoomCard
+import com.example.mydictionary.models.room.RoomImage
+import com.example.mydictionary.models.room.RoomWordTranslation
 import com.example.mydictionary.viewmodels.*
 import com.example.mydictionary.views.Screens
 import com.github.terrakok.cicerone.Cicerone

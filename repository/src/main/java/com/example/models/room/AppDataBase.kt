@@ -1,4 +1,4 @@
-package com.example.mydictionary.model.room
+package com.example.mydictionary.models.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

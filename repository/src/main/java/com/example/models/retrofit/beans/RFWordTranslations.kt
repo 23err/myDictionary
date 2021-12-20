@@ -1,3 +1,3 @@
-package com.example.mydictionary.model.retrofit.beans
+package com.example.mydictionary.models.retrofit.beans
 
 class RFWordTranslations : ArrayList<RFWordTranslationsItem>()

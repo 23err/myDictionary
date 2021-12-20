@@ -1,12 +1,12 @@
-package com.example.mydictionary.model
+package com.example.mydictionary.models
 
-import com.example.mydictionary.domain.interfaces.IRepository
-import com.example.mydictionary.model.retrofit.SkyEngApi
-import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
-import com.example.mydictionary.model.room.AppDataBase
-import com.example.mydictionary.model.room.RoomCard
-import com.example.mydictionary.model.room.RoomImage
-import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.domain.IRepository
+import com.example.mydictionary.models.retrofit.SkyEngApi
+import com.example.mydictionary.models.retrofit.beans.RFWordTranslations
+import com.example.mydictionary.models.room.AppDataBase
+import com.example.mydictionary.models.room.RoomCard
+import com.example.mydictionary.models.room.RoomImage
+import com.example.mydictionary.models.room.RoomWordTranslation
 
 class Repository(
     private val db: AppDataBase,
