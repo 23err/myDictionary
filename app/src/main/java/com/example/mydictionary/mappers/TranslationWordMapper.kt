@@ -2,7 +2,7 @@ package com.example.mydictionary.mappers
 
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.Mapper
-import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.mydictionary.models.room.RoomWordTranslation
 
 class WordTranslationMapper : Mapper<RoomWordTranslation, WordTranslation> {
     override fun map(src: RoomWordTranslation) = WordTranslation(src.uid, src.value, src.cardUid)

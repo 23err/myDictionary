@@ -19,7 +19,7 @@ object Dependencies {
     const val RETROFIT_CONVERTER_GSON_DEP = ("com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_CONVERTER_GSON_VERSION}")
     const val RETROFIT_ADAPTER_RXJAVA3_DEP = ("com.squareup.retrofit2:adapter-rxjava3:${Versions.RETROFIT_ADAPTER_RXJAVA3_VERSION}")
     const val RETROFIT_COROUTINES_ADAPTER_DEP = ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.RETROFIT_COROUTINES_ADAPTER_VERSION}")
-    const val CONCRYPT_ANDROID_DEP = ("org.conscrypt:conscrypt-android:${Versions.CONCRYPT_ANDROID_VERSION}")
+    const val CONSCRYPT_ANDROID_DEP = ("org.conscrypt:conscrypt-android:${Versions.CONCRYPT_ANDROID_VERSION}")
     const val GLIDE_DEP = ("com.github.bumptech.glide:glide:${Versions.GLIDE_VERSION}")
     const val GLIDE_COMPILER_DEP = ("com.github.bumptech.glide:compiler:${Versions.GLIDE_VERSION}")
     const val KOIN_CORE_DEP = ("io.insert-koin:koin-core:${Versions.KOIN_VERSION}")

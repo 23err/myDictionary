@@ -1,9 +1,9 @@
-package com.example.mydictionary.domain.interfaces
+package com.example.domain
 
-import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
-import com.example.mydictionary.model.room.RoomCard
-import com.example.mydictionary.model.room.RoomImage
-import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.mydictionary.models.retrofit.beans.RFWordTranslations
+import com.example.mydictionary.models.room.RoomCard
+import com.example.mydictionary.models.room.RoomImage
+import com.example.mydictionary.models.room.RoomWordTranslation
 
 interface IRepository {
     suspend fun getCards(): List<RoomCard>

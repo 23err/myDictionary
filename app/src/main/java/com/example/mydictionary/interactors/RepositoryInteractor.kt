@@ -1,16 +1,16 @@
 package com.example.mydictionary.interactors
 
+import com.example.domain.IRepository
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
-import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.Mapper
 import com.example.mydictionary.mappers.CardMapper
 import com.example.mydictionary.mappers.ImageMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
-import com.example.mydictionary.model.room.RoomCard
-import com.example.mydictionary.model.room.RoomImage
-import com.example.mydictionary.model.room.RoomWordTranslation
+import com.example.mydictionary.models.room.RoomCard
+import com.example.mydictionary.models.room.RoomImage
+import com.example.mydictionary.models.room.RoomWordTranslation
 
 class RepositoryInteractor (
     private val repo: IRepository,
@@ -48,7 +48,7 @@ class RepositoryInteractor (
 
         return wordTranslations[0].meanings
             .filter {
-                it.translation != null && !it.translation.text.isNullOrEmpty()
+                it.translation != null && !it.translation!!.text.isNullOrEmpty()
             }
             .map {
                 var image: Image? = null
