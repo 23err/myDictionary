@@ -1,4 +1,4 @@
-package com.example.mydictionary.domain.interfaces
+package com.example.repository
 
 import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
 import com.example.mydictionary.model.room.RoomCard

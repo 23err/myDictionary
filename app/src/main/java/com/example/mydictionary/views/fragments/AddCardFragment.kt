@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentAddWordBinding
 import com.example.mydictionary.viewmodels.AddCardViewModel
-import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.scope.Scope
 
-class AddCardFragment : Fragment() {
-
+class AddCardFragment : Fragment(), KoinScopeComponent {
+    override val scope: Scope = createScope(this)
     private lateinit var binding: FragmentAddWordBinding
-    private val addCardViewModel: AddCardViewModel by inject()
+    private val addCardViewModel: AddCardViewModel by scope.inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

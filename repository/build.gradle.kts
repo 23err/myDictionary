@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
     id("kotlin-kapt")
@@ -10,12 +10,8 @@ android {
     compileSdk = 31
 
     defaultConfig {
-        applicationId = "com.example.mydictionary"
         minSdk = 21
         targetSdk = 31
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,8 +23,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
             )
         }
     }
@@ -42,22 +38,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.CORE_KTX_DEP)
-    implementation(Dependencies.APPCOMPAT_DEP)
-    implementation(Dependencies.MATERIAL_DEP)
-    implementation(Dependencies.CONSTRAINT_LAYOUT_DEP)
-    testImplementation(Dependencies.JUNIT_DEP)
-    androidTestImplementation(Dependencies.EXT_JUNIT_DEP)
-    androidTestImplementation(Dependencies.ESPRESSO_CORE_DEP)
-    implementation(Dependencies.CICERONE_DEP)
-    kapt(Dependencies.MOXY_COMPILER_DEP)
-    implementation(Dependencies.MOXY_KTX_DEP)
-    implementation(Dependencies.MOXY_ANDROIDX_DEP)
-    implementation(Dependencies.GLIDE_DEP)
-    annotationProcessor(Dependencies.GLIDE_COMPILER_DEP)
-    implementation(Dependencies.KOIN_CORE_DEP)
-    implementation(Dependencies.KOIN_ANDROID_COMPAT_DEP)
-    implementation(Dependencies.KOIN_ANDROID_DEP)
     implementation(Dependencies.ROOM_RUNTIME_DEP)
     kapt(Dependencies.ROOM_COMPILER_DEP)
     implementation(Dependencies.ROOM_KTX_DEP)
@@ -69,7 +49,4 @@ dependencies {
     implementation(Dependencies.CONSCRYPT_ANDROID_DEP)
     implementation(Dependencies.COROUTINES_CORE_DEP)
     implementation(Dependencies.COROUTINES_ANDROID_DEP)
-
-    implementation(project(":repository"))
-
 }

@@ -1,6 +1,5 @@
-package com.example.mydictionary.model
+package com.example.repository
 
-import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.model.retrofit.SkyEngApi
 import com.example.mydictionary.model.retrofit.beans.RFWordTranslations
 import com.example.mydictionary.model.room.AppDataBase

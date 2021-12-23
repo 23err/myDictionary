@@ -13,13 +13,15 @@ import com.example.mydictionary.viewmodels.CardPresenter
 import com.example.mydictionary.views.adapters.CardImagesAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.scope.Scope
 
-class CardFragment : MvpAppCompatFragment() , CardView {
-
+class CardFragment : MvpAppCompatFragment() , CardView, KoinScopeComponent {
+    override val scope: Scope by lazy { createScope(this) }
     private lateinit var binding: FragmentCardBinding
-    private val imageLoader: IImageLoader by inject()
-    private val cardPresenter: CardPresenter by inject()
+    private val imageLoader: IImageLoader by scope.inject()
+    private val cardPresenter: CardPresenter by scope.inject()
     private val presenter by moxyPresenter { cardPresenter }
     private var adapter: CardImagesAdapter? = null
 
@@ -75,4 +77,6 @@ class CardFragment : MvpAppCompatFragment() , CardView {
             arguments = bundle
         }
     }
+
+
 }
