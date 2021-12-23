@@ -12,13 +12,15 @@ import com.example.mydictionary.domain.Card
 import com.example.mydictionary.viewmodels.AddTranslationViewModel
 import com.example.mydictionary.viewmodels.AppState
 import com.google.android.material.chip.Chip
-import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.scope.Scope
 
-class AddTranslationFragment : Fragment() {
-
+class AddTranslationFragment : Fragment(), KoinScopeComponent {
+    override val scope: Scope = createScope(this)
     private lateinit var binding: FragmentAddTranslationBinding
 
-    private val viewModel: AddTranslationViewModel by inject()
+    private val viewModel: AddTranslationViewModel by scope.inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,

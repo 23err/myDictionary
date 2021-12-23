@@ -9,18 +9,24 @@ import com.example.mydictionary.R
 import com.example.mydictionary.databinding.FragmentCardsBinding
 import com.example.mydictionary.domain.interfaces.CardsView
 import com.example.mydictionary.domain.interfaces.IImageLoader
+import com.example.mydictionary.extensions.viewById
 import com.example.mydictionary.viewmodels.CardsPresenter
 import com.example.mydictionary.views.adapters.WordsListAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.createScope
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.scope.Scope
 
-class CardsFragment: MvpAppCompatFragment(),  CardsView{
+class CardsFragment: MvpAppCompatFragment(),  CardsView, KoinScopeComponent{
 
     private lateinit var binding: FragmentCardsBinding
-    private val cardsPresenter: CardsPresenter by inject()
+    override val scope: Scope by lazy { createScope(this)}
+    private val cardsPresenter: CardsPresenter by scope.inject()
     private val presenter by moxyPresenter { cardsPresenter }
-    private val imageLoader: IImageLoader by inject()
+    private val imageLoader: IImageLoader by scope.inject()
+    private val btn by viewById<FloatingActionButton>(R.id.btnAdd)
 
     private var adapter: WordsListAdapter? = null
 
@@ -53,5 +59,7 @@ class CardsFragment: MvpAppCompatFragment(),  CardsView{
     override fun notifyDataSetChanged() {
         adapter?.notifyDataSetChanged()
     }
+
+
 
 }

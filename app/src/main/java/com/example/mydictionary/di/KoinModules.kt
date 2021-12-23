@@ -5,7 +5,6 @@ import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
 import com.example.mydictionary.domain.interfaces.IImageLoader
-import com.example.mydictionary.domain.interfaces.IRepository
 import com.example.mydictionary.domain.interfaces.IScreens
 import com.example.mydictionary.domain.interfaces.Mapper
 import com.example.mydictionary.extensions.GlideImageLoader
@@ -13,7 +12,6 @@ import com.example.mydictionary.interactors.RepositoryInteractor
 import com.example.mydictionary.mappers.CardMapper
 import com.example.mydictionary.mappers.ImageMapper
 import com.example.mydictionary.mappers.WordTranslationMapper
-import com.example.mydictionary.model.Repository
 import com.example.mydictionary.model.retrofit.SkyEngApi
 import com.example.mydictionary.model.room.AppDataBase
 import com.example.mydictionary.model.room.RoomCard
@@ -21,9 +19,16 @@ import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
 import com.example.mydictionary.viewmodels.*
 import com.example.mydictionary.views.Screens
+import com.example.mydictionary.views.fragments.AddImageFragment
+import com.example.mydictionary.views.fragments.AddTranslationFragment
+import com.example.mydictionary.views.fragments.CardFragment
+import com.example.mydictionary.views.fragments.CardsFragment
+import com.example.repository.IRepository
+import com.example.repository.Repository
 import com.github.terrakok.cicerone.Cicerone
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import layout.AddCardFragment
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -47,19 +52,25 @@ object KoinModules {
 
     val viewModel = module {
         viewModel { MainViewModel(get(), get()) }
-        viewModel {
-            AddTranslationViewModel(
-                screens = get(),
-                router = get(),
-                repositoryInteractor = get()
-            )
+        scope(named<AddTranslationFragment>()){
+            viewModel {
+                AddTranslationViewModel(
+                    screens = get(),
+                    router = get(),
+                    repositoryInteractor = get()
+                )
+            }
         }
-        viewModel {
-            AddCardViewModel(
-                screens = get(),
-                router = get()
-            )
+
+        scope(named<AddCardFragment>()){
+            viewModel {
+                AddCardViewModel(
+                    screens = get(),
+                    router = get()
+                )
+            }
         }
+
     }
 
     val appContext = module {
@@ -67,30 +78,44 @@ object KoinModules {
     }
 
     val presenter = module {
-        factory {
-            CardsPresenter(
-                repositoryInteractor = get(),
-                wordsPresenter = get<CardsPresenter.WordsListPresenter>(),
-                router = get(),
-                screens = get()
-            )
-        }
-        factory {
-            CardPresenter(
-                rvPresenter = get<CardPresenter.RVCardImagesPresenter>(),
-                repositoryInteractor = get(),
-            )
-        }
-        factory { AddImagePresenter(
-            repositoryInteractor = get(),
-            router = get(),
-            screens = get(),
-            rvImagesPresenter = get<AddImagePresenter.RVImagesPresenter>()
-        ) }
-        factory { CardsPresenter.WordsListPresenter() }
-        factory { AddImagePresenter.RVImagesPresenter() }
-        factory { CardPresenter.RVCardImagesPresenter() }
+        scope(named<CardsFragment>()) {
+            scoped {
+                CardsPresenter(
+                    repositoryInteractor = get(),
+                    wordsPresenter = get<CardsPresenter.WordsListPresenter>(),
+                    router = get(),
+                    screens = get()
+                )
+            }
 
+            scoped {
+                CardsPresenter.WordsListPresenter()
+            }
+        }
+
+        scope(named<CardFragment>()) {
+            scoped {
+                CardPresenter(
+                    rvPresenter = get<CardPresenter.RVCardImagesPresenter>(),
+                    repositoryInteractor = get(),
+                )
+            }
+
+            scoped { CardPresenter.RVCardImagesPresenter() }
+        }
+
+        scope(named<AddImageFragment>()) {
+            scoped {
+                AddImagePresenter(
+                    repositoryInteractor = get(),
+                    router = get(),
+                    screens = get(),
+                    rvImagesPresenter = get<AddImagePresenter.RVImagesPresenter>()
+                )
+            }
+
+            scoped { AddImagePresenter.RVImagesPresenter() }
+        }
     }
 
     val retrofit = module {

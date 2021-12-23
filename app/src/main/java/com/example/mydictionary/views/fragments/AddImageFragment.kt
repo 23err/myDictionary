@@ -14,13 +14,15 @@ import com.example.mydictionary.viewmodels.AddImagePresenter
 import com.example.mydictionary.views.adapters.ImagesListAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.scope.Scope
 
-class AddImageFragment : MvpAppCompatFragment(), AddImageView {
-
+class AddImageFragment : MvpAppCompatFragment(), AddImageView, KoinScopeComponent {
+    override val scope: Scope = createScope(this)
     private lateinit var binding: FragmentAddImageBinding
-    private val imageLoader: IImageLoader by inject()
-    private val addImagePresenter: AddImagePresenter by inject()
+    private val imageLoader: IImageLoader by scope.inject()
+    private val addImagePresenter: AddImagePresenter by scope.inject()
     private val presenter by moxyPresenter { addImagePresenter }
     private var adapter: ImagesListAdapter? = null
 

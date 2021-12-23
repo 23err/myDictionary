@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MyDictionary"
 include ':app'
+include ':repository'
