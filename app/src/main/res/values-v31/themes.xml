@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MyDictionary">
+        <item name="android:windowSplashScreenBackground">@color/colorError</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_baseline_language_24</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/gray</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_baseline_face_retouching_natural_24</item>
+    </style>
+</resources>
