@@ -18,4 +18,5 @@ object Versions{
     const val GLIDE_VERSION = "4.11.0"
     const val KOIN_VERSION = "3.1.2"
     const val COROUTINES_VERSION = "1.5.0"
+    const val SPLASH_SCREEN_CORE_VERSION = "1.0.0-alpha01"
 }

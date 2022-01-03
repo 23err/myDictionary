@@ -27,5 +27,6 @@ object Dependencies {
     const val KOIN_ANDROID_COMPAT_DEP = ("io.insert-koin:koin-android-compat:${Versions.KOIN_VERSION}")
     const val COROUTINES_CORE_DEP = ("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES_VERSION}")
     const val COROUTINES_ANDROID_DEP = ("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES_VERSION}")
+    const val SPLASH_SCREEN_CORE = ("androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_CORE_VERSION}")
 }
 
