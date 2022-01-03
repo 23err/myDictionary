@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.MyDictionary">
+    <style name="Theme.NewSplash" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.MyDictionary</item>
         <item name="android:windowSplashScreenBackground">@color/colorError</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_baseline_language_24</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/gray</item>

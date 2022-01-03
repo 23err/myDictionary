@@ -7,12 +7,12 @@ plugins {
 
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "com.example.mydictionary"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 
@@ -69,6 +69,7 @@ dependencies {
     implementation(Dependencies.CONSCRYPT_ANDROID_DEP)
     implementation(Dependencies.COROUTINES_CORE_DEP)
     implementation(Dependencies.COROUTINES_ANDROID_DEP)
+    implementation(Dependencies.SPLASH_SCREEN_CORE)
 
     implementation(project(":repository"))
 
