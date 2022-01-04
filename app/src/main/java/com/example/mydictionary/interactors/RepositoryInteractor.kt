@@ -12,7 +12,7 @@ import com.example.mydictionary.model.room.RoomImage
 import com.example.mydictionary.model.room.RoomWordTranslation
 import com.example.repository.IRepository
 
-class RepositoryInteractor (
+open class RepositoryInteractor (
     private val repo: IRepository,
     private val cardMapper: Mapper<RoomCard, Card> = CardMapper(),
     private val wordTranslationsMapper: Mapper<RoomWordTranslation, WordTranslation> = WordTranslationMapper(),

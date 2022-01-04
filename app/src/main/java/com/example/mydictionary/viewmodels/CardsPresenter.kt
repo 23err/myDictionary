@@ -25,7 +25,7 @@ class CardsPresenter(
         }
     )
 
-    private fun handleError(throwable: Throwable) {
+    fun handleError(throwable: Throwable) {
         throwable.message?.let{
             viewState.showError(it)
         }

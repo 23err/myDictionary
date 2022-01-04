@@ -69,7 +69,13 @@ dependencies {
     implementation(Dependencies.CONSCRYPT_ANDROID_DEP)
     implementation(Dependencies.COROUTINES_CORE_DEP)
     implementation(Dependencies.COROUTINES_ANDROID_DEP)
-    implementation(Dependencies.SPLASH_SCREEN_CORE)
+    implementation(Dependencies.SPLASH_SCREEN_CORE_DEP)
+    testImplementation(Dependencies.MOCKITO_CORE_DEP)
+    testImplementation(Dependencies.MOCKITO_INLINE_DEP)
+    testImplementation(Dependencies.MOCKITO_KOTLIN_DEP) {
+        exclude(Dependencies.KOTLIN_DEP)
+        exclude(Dependencies.MOCKITO_DEP)
+    }
 
     implementation(project(":repository"))
 

@@ -1,4 +1,7 @@
-object Versions{
+object Versions {
+    const val MOCKITO_KOTLIN_VERSION = "1.5.0"
+    const val MOCKITO_INLINE_VERSION = "4.1.0"
+    const val MOCKITO_CORE_VERSION = "4.1.0"
     const val CORE_KTX_VERSION = "1.7.0"
     const val APPCOMPAT_VERSION = "1.4.0"
     const val MATERIAL_VERSION = "1.4.0"
