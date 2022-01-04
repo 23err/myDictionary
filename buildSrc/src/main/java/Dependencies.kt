@@ -1,4 +1,9 @@
 object Dependencies {
+    const val MOCKITO_DEP = "org.mockito"
+    const val KOTLIN_DEP = "org.jetbrains.kotlin"
+    const val MOCKITO_KOTLIN_DEP = "com.nhaarman:mockito-kotlin:${Versions.MOCKITO_KOTLIN_VERSION}"
+    const val MOCKITO_INLINE_DEP = "org.mockito:mockito-inline:${Versions.MOCKITO_INLINE_VERSION}"
+    const val MOCKITO_CORE_DEP = "org.mockito:mockito-core:${Versions.MOCKITO_CORE_VERSION}"
     const val CORE_KTX_DEP = "androidx.core:core-ktx:${Versions.CORE_KTX_VERSION}"
     const val APPCOMPAT_DEP = "androidx.appcompat:appcompat:${Versions.APPCOMPAT_VERSION}"
     const val MATERIAL_DEP = "com.google.android.material:material:${Versions.MATERIAL_VERSION}"
@@ -27,6 +32,6 @@ object Dependencies {
     const val KOIN_ANDROID_COMPAT_DEP = ("io.insert-koin:koin-android-compat:${Versions.KOIN_VERSION}")
     const val COROUTINES_CORE_DEP = ("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES_VERSION}")
     const val COROUTINES_ANDROID_DEP = ("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES_VERSION}")
-    const val SPLASH_SCREEN_CORE = ("androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_CORE_VERSION}")
+    const val SPLASH_SCREEN_CORE_DEP = ("androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_CORE_VERSION}")
 }
 
