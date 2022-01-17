@@ -4,7 +4,10 @@ import androidx.room.Room
 import com.example.mydictionary.domain.Card
 import com.example.mydictionary.domain.Image
 import com.example.mydictionary.domain.WordTranslation
-import com.example.mydictionary.domain.interfaces.*
+import com.example.mydictionary.domain.interfaces.IImageLoader
+import com.example.mydictionary.domain.interfaces.IRepository
+import com.example.mydictionary.domain.interfaces.IScreens
+import com.example.mydictionary.domain.interfaces.Mapper
 import com.example.mydictionary.extensions.GlideImageLoader
 import com.example.mydictionary.interactors.RepositoryInteractor
 import com.example.mydictionary.mappers.CardMapper
@@ -29,10 +32,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object KoinModules {
-
-    const val IMAGES_PRESENTER = "imagesPresenter"
-    const val CARD_IMAGES_PRESENTER = "cardImagesPresenter"
-    const val WORD_LIST_PRESENTER = "wordListPresenter"
     const val IMAGE_MAPPER = "imageMapper"
     const val WORD_TRANSLATION_MAPPER = "wordTranslationMapper"
     const val CARD_MAPPER = "cardMapper"
@@ -71,14 +70,14 @@ object KoinModules {
         factory {
             CardsPresenter(
                 repositoryInteractor = get(),
-                wordsPresenter = get(named(WORD_LIST_PRESENTER)),
+                wordsPresenter = get<CardsPresenter.WordsListPresenter>(),
                 router = get(),
                 screens = get()
             )
         }
         factory {
             CardPresenter(
-                rvPresenter = get(named(CARD_IMAGES_PRESENTER)),
+                rvPresenter = get<CardPresenter.RVCardImagesPresenter>(),
                 repositoryInteractor = get(),
             )
         }
@@ -86,11 +85,11 @@ object KoinModules {
             repositoryInteractor = get(),
             router = get(),
             screens = get(),
-            rvImagesPresenter = get(named(IMAGES_PRESENTER))
+            rvImagesPresenter = get<AddImagePresenter.RVImagesPresenter>()
         ) }
-        factory<IRVPresenter<Card, IWordView>>(named(WORD_LIST_PRESENTER)) { CardsPresenter.WordsListPresenter() }
-        factory<IRVPresenter<Image, ISelectedImageItemView>>(named(IMAGES_PRESENTER)) { AddImagePresenter.RVImagesPresenter() }
-        factory<IRVPresenter<Image, IImageItemView>>(named(CARD_IMAGES_PRESENTER)) { CardPresenter.RVCardImagesPresenter() }
+        factory { CardsPresenter.WordsListPresenter() }
+        factory { AddImagePresenter.RVImagesPresenter() }
+        factory { CardPresenter.RVCardImagesPresenter() }
 
     }
 

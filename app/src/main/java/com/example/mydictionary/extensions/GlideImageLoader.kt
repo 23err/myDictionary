@@ -7,6 +7,6 @@ import com.example.mydictionary.domain.interfaces.IImageLoader
 
 class GlideImageLoader(private val context: Context) : IImageLoader {
     override fun load(url: String, view: ImageView) {
-        Glide.with(context).load(url).into(view)
+        Glide.with(context).load(url).centerCrop().into(view)
     }
 }
